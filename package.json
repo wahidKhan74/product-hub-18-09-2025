@@ -1,0 +1,15 @@
+{
+  "name": "product-hub",
+  "version": "1.0.0",
+  "description": "This is a ecomerce REST API service",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test",
+    "start": "node server.js"
+  },
+  "author": "waheed",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
