@@ -23,10 +23,18 @@ app.get('/products', (req, res) => {
 });
 
 app.get('/about', (req, res) => {
+    // add header to response
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('X-Custom-Header', 'AboutPage');
+    res.setHeader('X-Author-Header', 'Waheed');
+
+    // add response body
     res.json({
         app: 'Product Hub',
         version: '1.0.0',
-        description: 'A simple product management API'
+        description: 'A simple product management API',
+        headers: req.headers, // get request headers
+        reqTime: new Date().toISOString()
     });
 });
 
