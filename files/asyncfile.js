@@ -37,6 +37,16 @@ async function writeAsyncFile(data) {
     }
 }
 
+
+async function appendAsyncFile(data) {
+    try {
+        await fs.promises.appendFile(ASYNC_FILE_BACKUP, os.EOL + JSON.stringify(data, null, 2), 'utf-8');
+    } catch (error) {
+        console.error('Error appending to async file:', error);
+    }
+}
+
+
 // Demo usage:
 (async () => {
     console.log("Reading async file...");
@@ -48,4 +58,9 @@ async function writeAsyncFile(data) {
     console.log("Writing async file...");
     await writeAsyncFile(asyncData);
     console.log("Completed write async file...");
+
+     console.log("-----------------------------------")
+    console.log("Append async file...");
+    await appendAsyncFile(asyncData);
+    console.log("Completed append async file...");
 })();

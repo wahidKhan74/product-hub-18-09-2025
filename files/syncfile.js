@@ -30,6 +30,14 @@ function writeSyncFile(data) {
     }
 }
 
+function appendToSyncFile(data) {
+    try {
+        fs.appendFileSync(SYNC_FILE_BACKUP, os.EOL + JSON.stringify(data, null, 2), 'utf-8');
+    } catch (error) {
+        console.error('Error appending to sync file:', error);
+    }
+}
+
 // Demo usage:
 
 console.log("Reading sync file...");
@@ -41,3 +49,8 @@ console.log("Completed read sync file...");
 console.log("Writing sync file...");
 writeSyncFile(syncData);
 console.log("Writing read sync file...");
+
+
+console.log("Appending sync file...");
+appendToSyncFile(syncData);
+console.log("Appending read sync file...");
