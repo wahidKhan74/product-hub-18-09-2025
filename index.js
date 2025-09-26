@@ -1,30 +1,30 @@
-const http = require('http');
-const port = 3000;
-http.createServer((req, res) => {
-    res.setHeader('Content-Type', 'text/plain' );
-    
-    if (req.url === '/' && req.method === 'GET') {
-        res.writeHead(200);
-        res.end(`Hello, Http Server is up and running on port ${port} \n`);
-    } else if (req.url === '/about' && req.method === 'GET') {
-        res.writeHead(200);
-        res.end('This is About Page');
-    } else if (req.url === '/contact' && req.method === 'GET') {
-        res.writeHead(200);
-        res.end('This is Contact Page');
-    } else if (req.url === '/user' && req.method === 'GET') {
-        const user = {
-            name: 'John Doe',
-            age: 30,
-            email: 'john@gmail.com'
-        };
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify(user));
-    } else {
-        res.writeHead(404);
-        res.end('404 Not Found');
-    }
+const express = require('express');
+const bodyParser = require('body-parser');
+const config = require('./src/configs');
+const productRoutes = require('./src/routes/product.routes');
+const categoryRoutes = require('./src/routes/category.routes');
 
-}).listen(3000);
+// Create express app
+const app = express();
 
-console.log(`Server running at http://localhost:${port}/`);
+// middleware 
+app.use(bodyParser.json());
+
+// Routes
+app.use('/products', productRoutes);
+app.use('/categories', categoryRoutes);
+
+// Home
+app.get("/", (req, res) => {
+  res.json({ message: "Welcome to E-commerce API" });
+});
+
+// 404
+app.use((req, res) => {
+  res.status(404).json({ message: "Route not found" });
+});
+
+// Start express server
+app.listen(config.port, () => {
+  console.log(`Server is running on http://localhost:${config.port}`);
+});
