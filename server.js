@@ -1,24 +1,31 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const productRoutes = require('./src/routes/productRoutes');
 
 // Create express app
 const app = express();
 const port = 3000;
 
-// Define a route handler for the default home page
+// set template engine
+app.set('view engine', 'vash');
+app.set('views', 'views');
+
+// Middleware to parse request body
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+// Default home page routes
 app.get('/', (req, res) => {
-  res.send(`Hello , Server is up and running on ${port}.`);
+  res.render("index", { title: "Home" });
 });
+
+// Product routes
+app.use('/products', productRoutes);
 
 app.get('/users', (req, res) => {
     res.json([
         { id: 1, name: 'John Doe' },
         { id: 2, name: 'Jane Smith' }
-    ]);
-});
-app.get('/products', (req, res) => {
-    res.json([
-        { id: 1, name: 'Product A', price: 100 },
-        { id: 2, name: 'Product B', price: 150 }
     ]);
 });
 
@@ -39,9 +46,9 @@ app.get('/contact', (req, res) => {
     });
 });
 
-// handle 404 errors
+// 404 handler (must be last)
 app.use((req, res) => {
-  res.status(404).send('404 Not Found');
+  res.status(404).render("404", { title: "Page Not Found" });
 });
 
 // Start express server
