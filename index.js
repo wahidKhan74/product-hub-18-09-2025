@@ -4,6 +4,7 @@ const config = require('./src/configs');
 const productRoutes = require('./src/routes/product.routes');
 const categoryRoutes = require('./src/routes/category.routes');
 const userRoutes = require('./src/routes/user.routes');
+const chatbotRoutes = require('./src/routes/chatbot.routes');
 
 // Create express app
 const app = express();
@@ -15,6 +16,7 @@ app.use(bodyParser.json());
 app.use('/products', productRoutes);
 app.use('/categories', categoryRoutes);
 app.use('/users', userRoutes);
+app.use('/api', chatbotRoutes);
 
 // Home
 app.get("/", (req, res) => {
