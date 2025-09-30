@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const config = require('./src/configs');
 const productRoutes = require('./src/routes/product.routes');
 const categoryRoutes = require('./src/routes/category.routes');
+const userRoutes = require('./src/routes/user.routes');
 
 // Create express app
 const app = express();
@@ -13,6 +14,7 @@ app.use(bodyParser.json());
 // Routes
 app.use('/products', productRoutes);
 app.use('/categories', categoryRoutes);
+app.use('/users', userRoutes);
 
 // Home
 app.get("/", (req, res) => {
