@@ -1,61 +1,92 @@
-const productModel = require('../models/product.model');
-const categoryModel = require('../models/category.model');
+const {Product} = require('../models');
 
 // Get all products
-function getAllProducts(req, res) {
-    const products = productModel.getAll();
-    res.json(products);
+exports.getAllProducts = async (req, res) => {
+    try {
+        const products = await Product.findAll({ include: 'Category' });
+        res.status(200).json({
+            success: true,
+            count: products.length,
+            data: products,
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
 }
 
 // Get product by ID
-function getProductById(req, res) {
-    const id = parseInt(req.params.id);
-    const product = productModel.getById(id);
-    if (product) {
-        res.json(product);
-    }
-    else {
-        res.status(404).json({ message: "Product not found" });
+exports.getProductById = async (req, res) =>{
+    try {
+        const products = await Product.findByPk( req.params.id,
+            { include: 'Category' }
+        );
+         if (!product) {
+            return res.status(404).json({ 
+                success: false, 
+                message: "Product not found with id "+ req.params.id 
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            count: products.length,
+            data: products,
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
     }
 }
 
 // Add a new product
-function addProduct(req, res) {
-    const { name, price, categoryId } = req.body;
-    const category = categoryModel.getById(categoryId);
-    if (!category) {
-        return res.status(400).json({ message: "Invalid category ID" });
+exports.addProduct = async (req, res) => {
+     try {
+        const { name, description, price, stock, categoryId } = req.body;
+        const newProduct = await Product.create({ name, description, price, stock, categoryId });
+        res.status(201).json({
+            success: true,
+            data: newProduct,
+            message: "Product created successfully",
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
     }
-    const newProduct = productModel.create({ name, price, categoryId });
-    res.status(201).json(newProduct);
 }
 
 // Update a product
-function updateProduct(req, res) {
-    const id = parseInt(req.params.id);
-    const { name, price, categoryId } = req.body;
-    const category = categoryModel.getById(categoryId);
-    if (!category) {
-        return res.status(400).json({ message: "Invalid category ID" });
-    }
-    const updatedProduct = productModel.update(id, { name, price, categoryId });
-    if (updatedProduct) {
-        res.json(updatedProduct);
-    } else {
-        res.status(404).json({ message: "Product not found" });
+exports.updateProduct = async (req, res) => {
+    try {
+        const { name, description, price, stock, categoryId } = req.body;
+        const product = await Product.findByPk(req.params.id);
+        if (!product) {
+            return res.status(404).json({ success: false, message: "Product not found" });
+        }
+        const newProduct = await Product.update({ name, description, price, stock, categoryId });
+        res.status(200).json({
+            success: true,
+            data: newProduct,
+            message: "Product updated successfully",
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
     }
 }
 
 // Delete a product
-function deleteProduct(req, res) {
-    const id = parseInt(req.params.id);
-    const deletedProduct = productModel.remove(id);
-    if (deletedProduct) {
-        res.json(deletedProduct);
-    } else {
-        res.status(404).json({ message: "Product not found" });
+exports.deleteProduct = async (req, res) => {
+    try {
+    const product = await Product.findByPk(req.params.id);
+
+    if (!product) {
+      return res.status(404).json({ success: false, message: "Product not found" });
     }
+
+    await product.destroy();
+
+    res.status(200).json({
+      success: true,
+      message: "Product deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 }
-
-
-module.exports = { getAllProducts, getProductById, addProduct, updateProduct, deleteProduct };

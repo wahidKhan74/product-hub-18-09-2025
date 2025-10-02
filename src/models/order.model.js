@@ -1,34 +1,19 @@
-let orders = [];
+const { DataTypes } = require("sequelize");
+const sequelize = require("../configs/db");
+const User = require("./user.model");
 
-// CRUD operations for orders
-function getAll() { return orders; }
+const Order = sequelize.define("Order", {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    userId: { type: DataTypes.INTEGER, allowNull: false },
+    totalAmount: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
+    status: { type: DataTypes.ENUM("pending", "completed", "cancelled"), defaultValue: "pending" },
+    shippingAddress: { type: DataTypes.STRING },
+    paymentMethod: { type: DataTypes.ENUM("COD", "CreditCard", "PayPal"), defaultValue: "COD" }
+    }, { timestamps: true }
+);
 
-function getById(id) { return orders.find(o => o.id === id); }
+// Relations
+User.hasMany(Order, { foreignKey: "userId" });
+Order.belongsTo(User, { foreignKey: "userId" });
 
-function create(order) {
-  const id = orders.length ? orders[orders.length - 1].id + 1 : 1;
-  order.id = id;
-  order.createdAt = new Date();
-  orders.push(order);
-  return order;
-}
-
-function update(id, updatedOrder) {
-    const index = orders.findIndex(o => o.id === id);
-    if (index !== -1) {
-        orders[index] = { id, ...updatedOrder };
-        return orders[index];
-    }
-    return null;
-}
-
-function remove(id) {
-    const index = orders.findIndex(o => o.id === id);
-    if (index !== -1) {
-        return orders.splice(index, 1)[0];
-    }
-    return null;
-}
-
-
-module.exports = { getAll, getById, create, update, remove };
+module.exports = Order;

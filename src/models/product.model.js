@@ -1,40 +1,18 @@
-let products = [
-  { id: 1, name: "Apple iPhone 15 Pro", price: 1199, categoryId: 1 },
-  { id: 2, name: "Samsung Galaxy S23 Ultra", price: 1099, categoryId: 1 },
-  { id: 3, name: "Sony WH-1000XM5 Headphones", price: 399, categoryId: 2 }
-];
+const { DataTypes } = require("sequelize");
+const sequelize = require("../configs/db");
+const Category = require("./category.model");
 
-// CRUD operations 
-// Get all products
-function getAll() { return products; }
+const Product = sequelize.define("Product", {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    name: { type: DataTypes.STRING, allowNull: false },
+    description: { type: DataTypes.TEXT },
+    price: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
+    stock: { type: DataTypes.INTEGER, defaultValue: 0 },
+    }, { timestamps: true }
+);
 
-// Get product by ID
-function getById(id) { return products.find(p => p.id === id); }
+// Relation: Product belongs to Category
+Category.hasMany(Product, { foreignKey: "categoryId", onDelete: "CASCADE" });
+Product.belongsTo(Category, { foreignKey: "categoryId" });
 
-// Add a new product
-function create(product) {
-  const id = products.length ? products[products.length - 1].id + 1 : 1;
-  product.id = id;
-  products.push(product);
-  return product;
-}
-
-// Update a product
-function update(id, updatedProduct) {
-    const index = products.findIndex(p => p.id === id);
-    if (index !== -1) {
-        products[index] = { id, ...updatedProduct };
-        return products[index];
-    }
-    return null;
-}
-// Delete a product
-function remove(id) {
-    const index = products.findIndex(p => p.id === id);
-    if (index !== -1) {
-        return products.splice(index, 1)[0];
-    }
-    return null;
-}
-
-module.exports = { getAll, getById, create, update, remove };
+module.exports = Product;
