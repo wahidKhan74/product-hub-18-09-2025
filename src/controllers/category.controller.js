@@ -24,4 +24,11 @@ function addCategory(req, res) {
     res.status(201).json(newCategory);
 }
 
-module.exports = { getAllCategories, getCategoryById, addCategory };
+// Update a new category
+function updateCategory(req, res) {
+    const { name } = req.body;
+    const newCategory = categoryModel.create({ name });
+    res.status(201).json(newCategory);
+}
+
+module.exports = { getAllCategories, getCategoryById, addCategory , updateCategory};
