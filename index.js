@@ -7,6 +7,7 @@ const categoryRoutes = require('./src/routes/category.routes');
 const orderRoutes = require('./src/routes/order.routes');
 const cartRoutes = require('./src/routes/cart.routes');
 const userRoutes = require('./src/routes/user.routes');
+const authRoutes = require('./src/routes/auth.routes');
 
 // Create express app
 const app = express();
@@ -27,6 +28,7 @@ app.use('/categories', categoryRoutes);
 app.use('/orders', orderRoutes);
 app.use('/carts', cartRoutes);
 app.use('/users', userRoutes);
+app.use('/auth', authRoutes);
 
 // Home
 app.get("/", (req, res) => {

@@ -14,6 +14,7 @@ This project provides APIs for managing products, users, orders, and authenticat
 - MVC Project Structure (models, controllers, routes, services)
 - SQL-based Database (MySQL/Postgres/SQLite supported)
 - Dotenv for env varaible configuration (npm install dotenv)
+- JWT + Bcryt (npm install jsonwebtoken bcryptjs )
 
 
 src/
