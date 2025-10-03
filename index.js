@@ -3,8 +3,10 @@ const bodyParser = require('body-parser');
 const config = require('./src/configs');
 const { sequelize } = require('./src/models');
 const productRoutes = require('./src/routes/product.routes');
-// const categoryRoutes = require('./src/routes/category.routes');
-// const orderRoutes = require('./src/routes/orders.routes');
+const categoryRoutes = require('./src/routes/category.routes');
+const orderRoutes = require('./src/routes/order.routes');
+const cartRoutes = require('./src/routes/cart.routes');
+const userRoutes = require('./src/routes/user.routes');
 
 // Create express app
 const app = express();
@@ -21,8 +23,10 @@ app.use(bodyParser.json());
 
 // Routes
 app.use('/products', productRoutes);
-// app.use('/categories', categoryRoutes);
-// app.use('/orders', orderRoutes);
+app.use('/categories', categoryRoutes);
+app.use('/orders', orderRoutes);
+app.use('/carts', cartRoutes);
+app.use('/users', userRoutes);
 
 // Home
 app.get("/", (req, res) => {

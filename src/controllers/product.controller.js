@@ -20,7 +20,7 @@ exports.getProductById = async (req, res) =>{
         const products = await Product.findByPk( req.params.id,
             { include: 'Category' }
         );
-         if (!product) {
+         if (!products || products.length<0) {
             return res.status(404).json({ 
                 success: false, 
                 message: "Product not found with id "+ req.params.id 
@@ -55,17 +55,22 @@ exports.addProduct = async (req, res) => {
 // Update a product
 exports.updateProduct = async (req, res) => {
     try {
+        const { id } = req.params; // product id from URL
         const { name, description, price, stock, categoryId } = req.body;
-        const product = await Product.findByPk(req.params.id);
-        if (!product) {
-            return res.status(404).json({ success: false, message: "Product not found" });
+        const [updated]  = await Product.update(
+            { name, description, price, stock, categoryId },// fields to update
+            { where: { id: id } } // WHERE condition is mandatory
+        );
+        if (updated) {
+            const updatedProduct = await Product.findByPk(id);
+            return res.status(200).json(
+                {   
+                    success: true,
+                    message: "Product updated successfully", 
+                    data: updatedProduct 
+                });
         }
-        const newProduct = await Product.update({ name, description, price, stock, categoryId });
-        res.status(200).json({
-            success: true,
-            data: newProduct,
-            message: "Product updated successfully",
-        });
+        res.status(404).json({ success: false, message: "Product not found" });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }

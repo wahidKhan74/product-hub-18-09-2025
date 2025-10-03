@@ -1,0 +1,34 @@
+[
+  {
+    "name": "Electronics",
+    "description": "Gadgets and devices"
+  },
+  {
+    "name": "Clothing",
+    "description": "Apparel, fashion, and accessories"
+  },
+  {
+    "name": "Home & Kitchen",
+    "description": "Furniture, appliances, and kitchenware"
+  },
+  {
+    "name": "Books",
+    "description": "Educational, fiction, and non-fiction literature"
+  },
+  {
+    "name": "Health & Beauty",
+    "description": "Personal care, skincare, and wellness products"
+  },
+  {
+    "name": "Sports & Outdoors",
+    "description": "Sports gear, fitness equipment, and outdoor essentials"
+  },
+  {
+    "name": "Toys & Games",
+    "description": "Kids’ toys, puzzles, and entertainment"
+  },
+  {
+    "name": "Automotive",
+    "description": "Vehicle parts, accessories, and tools"
+  }
+]
