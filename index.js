@@ -9,6 +9,13 @@ const productRoutes = require('./src/routes/product.routes');
 // Create express app
 const app = express();
 
+// Store env variables inside express app settings
+app.set("port", process.env.PORT || 3000);
+app.set("db_host", process.env.DB_HOST || 'locahost');
+app.set("db_user", process.env.DB_USER || 'root');
+app.set("db_password", process.env.DB_PASSWORD || 'root');
+
+
 // middleware 
 app.use(bodyParser.json());
 
@@ -32,8 +39,8 @@ sequelize.sync({ alter: true }).then(() => {  // auto-create/update tables
   console.log('Database connected');
   console.log("Database & tables synced successfully");
   // Server logic
-  app.listen(config.port, () => {
-    console.log(`Server is running on http://localhost:${config.port}`);
+  app.listen(app.get("port"), () => {
+    console.log(`Server is running on http://localhost:${app.get("port")}`);
   });
 }).catch(err => {
   console.error("Unable to connect to the database:", err);

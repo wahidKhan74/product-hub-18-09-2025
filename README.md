@@ -13,6 +13,7 @@ This project provides APIs for managing products, users, orders, and authenticat
 - Checkout & Payments (dummy integration)
 - MVC Project Structure (models, controllers, routes, services)
 - SQL-based Database (MySQL/Postgres/SQLite supported)
+- Dotenv for env varaible configuration (npm install dotenv)
 
 
 src/
