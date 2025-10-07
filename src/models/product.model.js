@@ -1,18 +1,13 @@
-const { DataTypes } = require("sequelize");
-const sequelize = require("../configs/db");
-const Category = require("./category.model");
+const mongoose = require('mongoose');
 
-const Product = sequelize.define("Product", {
-    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    name: { type: DataTypes.STRING, allowNull: false },
-    description: { type: DataTypes.TEXT },
-    price: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
-    stock: { type: DataTypes.INTEGER, defaultValue: 0 },
+const productSchema  = new mongoose.Schema( {
+    name: { type: String, required: true  },
+    description: { type: String },
+    price: { type: Number, required: true },
+    stock: { type: Number, default: 0 },
+    categoryId: { type: mongoose.Schema.Types.ObjectId, ref: "Category"}
     }, { timestamps: true }
 );
 
-// Relation: Product belongs to Category
-Category.hasMany(Product, { foreignKey: "categoryId", onDelete: "CASCADE" });
-Product.belongsTo(Category, { foreignKey: "categoryId" });
 
-module.exports = Product;
+module.exports = mongoose.model("Product", productSchema);

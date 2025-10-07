@@ -12,7 +12,7 @@ This project provides APIs for managing products, users, orders, and authenticat
 - Cart & Order APIs
 - Checkout & Payments (dummy integration)
 - MVC Project Structure (models, controllers, routes, services)
-- SQL-based Database (MySQL/Postgres/SQLite supported)
+- NO-SQL-based Database (MongoDb supported)
 - Dotenv for env varaible configuration (npm install dotenv)
 - JWT + Bcryt (npm install jsonwebtoken bcryptjs )
 
@@ -20,9 +20,20 @@ This project provides APIs for managing products, users, orders, and authenticat
 src/
 │   ├── config/          # Database & environment config
 │   ├── controllers/     # Handle requests & responses
-│   ├── models/          # SQL models (Sequelize/Knex/Raw SQL) (npm install sequelize mysql2)
+│   ├── models/          # Mongoose models (Mongoose) (npm install mongoose)
 │   ├── routes/          # Express route definitions
 │   ├── services/        # Business logic (e.g., cart handling)
 │   ├── middlewares/     # Auth & error handlers
 │   └── app.js           # Express app setup
 
+
+
+Sequelize : ORM framework → Object Relational Mapper  :: MySQL, PostgreSQL, SQLite
+Mongoose : ODM framework → Object Document Mapper   :: MongoDB
+
+
+Uninstall/remove sequelize:
+> npm remove sequelize mysql2
+
+Install mongoose:
+> npm install mongoose

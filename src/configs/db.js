@@ -1,16 +1,17 @@
-const { Sequelize  } = require('sequelize');
+const mongoose = require('mongoose');
 const config = require('./index');
 
 // Initialize Sequelize
-const sequelize = new Sequelize (
-  config.db.database,
-  config.db.user,
-  config.db.password,
-  {
-    host: config.db.host,
-    dialect: config.db.dialect,
-    logging: false, // Disable logging; default: console.log
+const connectDB = async ()=> {
+  try {
+    await mongoose.connect(config.db.dburl)
+    .then(() => console.log("MongoDB connected successfully"))
+    .catch(err => console.error("MongoDB connection error:", err));
+  } catch (error) {
+    console.error("MongoDB connection error:", err.message);
+    process.exit(1);
   }
-);
 
-module.exports =  sequelize;
+}
+
+module.exports =  connectDB;

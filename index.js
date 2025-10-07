@@ -1,7 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const config = require('./src/configs');
-const { sequelize } = require('./src/models');
+const connectDB = require('./src/configs/db');
 const productRoutes = require('./src/routes/product.routes');
 const categoryRoutes = require('./src/routes/category.routes');
 const orderRoutes = require('./src/routes/order.routes');
@@ -22,6 +21,9 @@ app.set("db_password", process.env.DB_PASSWORD || 'root');
 // middleware 
 app.use(bodyParser.json());
 
+// logic to init db connection
+connectDB();
+
 // Routes
 app.use('/products', productRoutes);
 app.use('/categories', categoryRoutes);
@@ -41,13 +43,6 @@ app.use((req, res) => {
 });
 
 // Start db sync and express server
-sequelize.sync({ alter: true }).then(() => {  // auto-create/update tables
-  console.log('Database connected');
-  console.log("Database & tables synced successfully");
-  // Server logic
-  app.listen(app.get("port"), () => {
+app.listen(app.get("port"), () => {
     console.log(`Server is running on http://localhost:${app.get("port")}`);
-  });
-}).catch(err => {
-  console.error("Unable to connect to the database:", err);
 });
